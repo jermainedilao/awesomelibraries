@@ -1,5 +1,5 @@
 # awesomelibraries
-Android app with <b>awesome!!!!</b> libraries that every beginner android developer should know. Edit Add topics
+Android app with <b>awesome!!!!</b> libraries that every android beginner should know.
 
 Libraries included: 
  - ButterKnife
