@@ -3,7 +3,7 @@ Android app with <b>awesome!!!!</b> libraries that every android beginner should
 
 Libraries included: 
  - ButterKnife
- - Retrofit
+ - Retrofit 2
  - Gson
  - Dagger 2
  - Realm
