@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.jermaine.awesomelibraries.Henson;
 import com.jermaine.awesomelibraries.R;
 import com.jermaine.awesomelibraries.api.response.Repo;
 import com.jermaine.awesomelibraries.view.activity.base.BaseActivity;
-import com.jermaine.awesomelibraries.view.activity.viewitem.Henson;
 import com.jermaine.awesomelibraries.view.adapter.repolist.RepoListAdapter;
 import com.jermaine.awesomelibraries.view.adapter.repolist.callback.OnItemClickListener;
 
@@ -39,6 +40,12 @@ public class RepoListActivity extends BaseActivity implements RepoListContract.R
     protected void onStart() {
         super.onStart();
         mPresenter.setView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPresenter.onStop();
     }
 
     public void initializeViews() {
@@ -81,6 +88,13 @@ public class RepoListActivity extends BaseActivity implements RepoListContract.R
         Intent intent = Henson.with(this)
                 .gotoViewItemActivity()
                 .mRepoJson(repoJson)
+                .build();
+        startActivity(intent);
+    }
+
+    public void onAddClick(View view) {
+        Intent intent = Henson.with(this)
+                .gotoAddRepoActivity()
                 .build();
         startActivity(intent);
     }

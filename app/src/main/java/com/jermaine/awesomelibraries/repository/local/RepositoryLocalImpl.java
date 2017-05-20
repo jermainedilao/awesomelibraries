@@ -12,25 +12,31 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.OrderedCollectionChangeSet;
 import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class RetrofitRepositoryLocalImpl implements RetrofitRepository {
+public class RepositoryLocalImpl implements RetrofitRepository {
 
     public static final String TAG = "RetrofitRepositoryLocal";
 
     @Inject
     transient Realm mRealm;
 
-    public RetrofitRepositoryLocalImpl(AppComponent appComponent) {
+    private RealmResults<Repo> mRepoRealmResults;
+
+    public RepositoryLocalImpl(AppComponent appComponent) {
         appComponent.inject(this);
     }
 
     @Override
-    public void save(Repo repo) {
-        // realm save
+    public void save(final Repo repo) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(repo);
+            }
+        });
     }
 
     @Override
@@ -55,14 +61,21 @@ public class RetrofitRepositoryLocalImpl implements RetrofitRepository {
 
     @Override
     public void fetchRepos(final OnFetchReposCallback onFetchReposCallback) {
-        final RealmResults<Repo> repoRealmResults = mRealm.where(Repo.class)
-                .findAllAsync();
-        repoRealmResults.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<Repo>>() {
-            @Override
-            public void onChange(RealmResults<Repo> collection, OrderedCollectionChangeSet changeSet) {
-                onFetchReposCallback.onFetch(collection);
-                repoRealmResults.removeAllChangeListeners();
-            }
-        });
+        // no implementation, just subscribe to this repository
+    }
+
+    @Override
+    public void subscribe(OrderedRealmCollectionChangeListener<RealmResults<Repo>> orderedRealmCollectionChangeListener) {
+        if (mRepoRealmResults == null) {
+            mRepoRealmResults = mRealm.where(Repo.class).findAllAsync();
+        }
+        mRepoRealmResults.addChangeListener(orderedRealmCollectionChangeListener);
+    }
+
+    @Override
+    public void unsubscribe() {
+        if (mRepoRealmResults != null) {
+            mRepoRealmResults.removeAllChangeListeners();
+        }
     }
 }

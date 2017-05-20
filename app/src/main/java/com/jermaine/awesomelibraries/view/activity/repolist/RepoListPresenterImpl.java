@@ -8,21 +8,23 @@ import com.jermaine.awesomelibraries.api.response.Repo;
 import com.jermaine.awesomelibraries.base.BaseView;
 import com.jermaine.awesomelibraries.di.component.AppComponent;
 import com.jermaine.awesomelibraries.repository.callback.OnFetchReposCallback;
-import com.jermaine.awesomelibraries.repository.local.RetrofitRepositoryLocalImpl;
-import com.jermaine.awesomelibraries.repository.server.RetrofitRepositoryServerImpl;
-
-import java.util.List;
+import com.jermaine.awesomelibraries.repository.local.RepositoryLocalImpl;
+import com.jermaine.awesomelibraries.repository.server.RepositoryServerImpl;
 
 import javax.inject.Inject;
+
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
+import io.realm.RealmResults;
 
 public class RepoListPresenterImpl implements RepoListContract.RepoListPresenter {
 
     public static final String TAG = "RepoListPresenter";
 
     @Inject
-    transient RetrofitRepositoryLocalImpl mRetrofitRepositoryLocal;
+    transient RepositoryLocalImpl mRetrofitRepositoryLocal;
     @Inject
-    transient RetrofitRepositoryServerImpl mRetrofitRepositoryServer;
+    transient RepositoryServerImpl mRetrofitRepositoryServer;
     @Inject
     transient Gson mGson;
 
@@ -35,25 +37,19 @@ public class RepoListPresenterImpl implements RepoListContract.RepoListPresenter
     @Override
     public void setView(BaseView view) {
         mView = (RepoListContract.RepoListView) view;
+        mRetrofitRepositoryLocal.subscribe(new OrderedRealmCollectionChangeListener<RealmResults<Repo>>() {
+            @Override
+            public void onChange(RealmResults<Repo> collection, OrderedCollectionChangeSet changeSet) {
+                mView.provideRepos(collection);
+            }
+        });
 
-        fetchLocal();
+        fetchServer();
     }
 
     @Override
-    public void fetchLocal() {
-        mRetrofitRepositoryLocal.fetchRepos(new OnFetchReposCallback() {
-            @Override
-            public void onFetch(List<Repo> responseList) {
-                mView.provideRepos(responseList);
-
-                fetchServer();
-            }
-
-            @Override
-            public void onError() {
-                Log.d(TAG, "onError: ");
-            }
-        });
+    public void onStop() {
+        mRetrofitRepositoryLocal.unsubscribe();
     }
 
     @Override
@@ -61,8 +57,7 @@ public class RepoListPresenterImpl implements RepoListContract.RepoListPresenter
         mView.showProgressDialog();
         mRetrofitRepositoryServer.fetchRepos(new OnFetchReposCallback() {
             @Override
-            public void onFetch(List<Repo> responseList) {
-                mView.provideRepos(responseList);
+            public void onSuccess() {
                 mView.dismissProgressDialog();
             }
 

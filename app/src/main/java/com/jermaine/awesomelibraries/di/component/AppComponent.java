@@ -1,8 +1,9 @@
 package com.jermaine.awesomelibraries.di.component;
 
 import com.jermaine.awesomelibraries.di.module.AppModule;
-import com.jermaine.awesomelibraries.repository.local.RetrofitRepositoryLocalImpl;
-import com.jermaine.awesomelibraries.repository.server.RetrofitRepositoryServerImpl;
+import com.jermaine.awesomelibraries.repository.local.RepositoryLocalImpl;
+import com.jermaine.awesomelibraries.repository.server.RepositoryServerImpl;
+import com.jermaine.awesomelibraries.view.activity.additem.AddRepoPresenterImpl;
 import com.jermaine.awesomelibraries.view.activity.repolist.RepoListPresenterImpl;
 import com.jermaine.awesomelibraries.view.activity.viewitem.ViewItemPresenterImpl;
 
@@ -15,9 +16,11 @@ import dagger.Component;
 public interface AppComponent {
     void inject(RepoListPresenterImpl repoListPresenter);
 
-    void inject(RetrofitRepositoryLocalImpl retrofitRepositoryLocal);
+    void inject(RepositoryLocalImpl retrofitRepositoryLocal);
 
-    void inject(RetrofitRepositoryServerImpl retrofitRepositoryServer);
+    void inject(RepositoryServerImpl retrofitRepositoryServer);
 
     void inject(ViewItemPresenterImpl viewItemPresenter);
+
+    void inject(AddRepoPresenterImpl addRepoPresenter);
 }

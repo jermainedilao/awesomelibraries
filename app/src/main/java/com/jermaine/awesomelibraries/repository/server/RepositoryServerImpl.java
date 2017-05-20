@@ -6,24 +6,25 @@ import com.jermaine.awesomelibraries.api.response.Repo;
 import com.jermaine.awesomelibraries.di.component.AppComponent;
 import com.jermaine.awesomelibraries.repository.RetrofitRepository;
 import com.jermaine.awesomelibraries.repository.callback.OnFetchReposCallback;
-import com.jermaine.awesomelibraries.repository.local.RetrofitRepositoryLocalImpl;
+import com.jermaine.awesomelibraries.repository.local.RepositoryLocalImpl;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.realm.OrderedRealmCollectionChangeListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RetrofitRepositoryServerImpl implements RetrofitRepository {
+public class RepositoryServerImpl implements RetrofitRepository {
 
     @Inject
     transient ApiService mApiService;
     @Inject
-    transient RetrofitRepositoryLocalImpl mRetrofitRepositoryLocal;
+    transient RepositoryLocalImpl mRetrofitRepositoryLocal;
 
-    public RetrofitRepositoryServerImpl(AppComponent appComponent) {
+    public RepositoryServerImpl(AppComponent appComponent) {
         appComponent.inject(this);
     }
 
@@ -45,7 +46,7 @@ public class RetrofitRepositoryServerImpl implements RetrofitRepository {
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 List<Repo> repoList = response.body();
 
-                onFetchReposCallback.onFetch(repoList);
+                onFetchReposCallback.onSuccess();
                 mRetrofitRepositoryLocal.save(repoList);
             }
 
@@ -54,5 +55,15 @@ public class RetrofitRepositoryServerImpl implements RetrofitRepository {
                 onFetchReposCallback.onError();
             }
         });
+    }
+
+    @Override
+    public void subscribe(OrderedRealmCollectionChangeListener orderedRealmCollectionChangeListener) {
+        // leave it blank. implementation on local repository
+    }
+
+    @Override
+    public void unsubscribe() {
+        // leave it blank. implementation on local repository
     }
 }

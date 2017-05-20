@@ -11,6 +11,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ 'dart.henson.package' : 'com.jermaine.awesomelibraries' ]
+            }
+        }
+
     }
     buildTypes {
         release {
@@ -28,6 +35,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+
+    // Design Library
+    compile 'com.android.support:design:25.3.1'
 
     // Dart
     compile 'com.f2prateek.dart:dart:2.0.2'

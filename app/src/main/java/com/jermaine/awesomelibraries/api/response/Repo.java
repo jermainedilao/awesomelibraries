@@ -1,9 +1,6 @@
 package com.jermaine.awesomelibraries.api.response;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,6 +20,15 @@ public class Repo extends RealmObject {
     @SerializedName("description")
     @Expose
     private String description;
+
+    public Repo() {
+    }
+
+    public Repo(String id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     public String getId() {
         return id;

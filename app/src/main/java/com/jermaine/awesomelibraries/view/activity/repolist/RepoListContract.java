@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface RepoListContract {
     interface RepoListPresenter extends BasePresenter {
-        void fetchLocal();
-
         void fetchServer();
 
         void onItemClick(Repo repo);
+
+        void onStop();
     }
 
     interface RepoListView extends BaseView {

@@ -6,8 +6,8 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.jermaine.awesomelibraries.api.ApiService;
 import com.jermaine.awesomelibraries.app.App;
-import com.jermaine.awesomelibraries.repository.local.RetrofitRepositoryLocalImpl;
-import com.jermaine.awesomelibraries.repository.server.RetrofitRepositoryServerImpl;
+import com.jermaine.awesomelibraries.repository.local.RepositoryLocalImpl;
+import com.jermaine.awesomelibraries.repository.server.RepositoryServerImpl;
 
 import javax.inject.Singleton;
 
@@ -42,14 +42,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public RetrofitRepositoryLocalImpl providesRetrofitRepositoryLocal() {
-        return new RetrofitRepositoryLocalImpl(((App) mApplication).getComponent());
+    public RepositoryLocalImpl providesRetrofitRepositoryLocal() {
+        return new RepositoryLocalImpl(((App) mApplication).getComponent());
     }
 
     @Provides
     @Singleton
-    public RetrofitRepositoryServerImpl providesRetrofitRepositoryServer() {
-        return new RetrofitRepositoryServerImpl(((App) mApplication).getComponent());
+    public RepositoryServerImpl providesRetrofitRepositoryServer() {
+        return new RepositoryServerImpl(((App) mApplication).getComponent());
     }
 
     @Provides
