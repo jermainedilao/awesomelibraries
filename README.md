@@ -11,4 +11,4 @@ Implementation:
  - Lifecycle
  - Room
  - ViewModel
- - LiveData
+ - LiveDataU
