@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.repolist.RepoListActivity"
+        <activity android:name=".uicontroller.activity.repolist.RepoListActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.viewitem.ViewItemActivity"
+        <activity android:name=".uicontroller.activity.viewitem.ViewItemActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".view.activity.additem.AddRepoActivity"
+        <activity android:name=".uicontroller.activity.additem.AddRepoActivity"
             android:screenOrientation="portrait" />
     </application>
 
