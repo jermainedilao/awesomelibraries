@@ -1,10 +1,14 @@
-# awesomelibraries
-Android app with <b>awesome!!!!</b> libraries that every android beginner should know.
+# newandroid
 
-Libraries included: 
- - ButterKnife
+Simple list android app using Kotlin and new Android Architecture Components
+
+Libraries included:
+ - Dagger 2
  - Retrofit 2
  - Gson
- - Dagger 2
- - Realm
- - Dart & Henson
+
+Implementation:
+ - Lifecycle
+ - Room
+ - ViewModel
+ - LiveData
